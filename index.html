@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f4f7fb" />
+  <meta name="description" content="Browser-based driver monitoring dashboard for a real-time driver distraction detection demonstration." />
+  <title>DriveSense AI — Driver Monitoring System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#top" aria-label="DriveSense home">
+        <span class="brand-mark"><svg viewBox="0 0 40 40" aria-hidden="true"><path d="M6 24 11 13a4 4 0 0 1 3.6-2.3h10.8A4 4 0 0 1 29 13l5 11v7h-4v-4H10v4H6z"/><path d="M11 21h18M14 27h.1M26 27h.1"/></svg></span>
+        <span><strong>DriveSense<span> AI</span></strong><small>DRIVER MONITORING</small></span>
+      </a>
+      <div class="side-label">WORKSPACE</div>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a class="nav-link active" href="#overview"><span class="nav-icon">◫</span> Overview <span class="nav-dot"></span></a>
+        <a class="nav-link" href="#monitor"><span class="nav-icon">◎</span> Live monitor</a>
+        <a class="nav-link" href="#events"><span class="nav-icon">≋</span> Event history</a>
+        <a class="nav-link" href="#about"><span class="nav-icon">ⓘ</span> About system</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="privacy-card"><span class="privacy-icon">⌁</span><div><b>Local camera session</b><p>Video is processed in your browser and is not uploaded by this demo.</p></div></div>
+        <div class="sidebar-foot"><span class="online-dot"></span> SYSTEM INTERFACE <span class="version">WEB 1.0</span></div>
+      </div>
+    </aside>
+
+    <main class="main-content" id="top">
+      <header class="topbar">
+        <div class="breadcrumbs">Workspace <span>/</span> <b>Overview</b></div>
+        <div class="topbar-right"><span class="system-status"><i></i> Browser AI <b id="engineState">READY</b></span><span class="avatar">DS</span></div>
+      </header>
+
+      <section class="page-heading" id="overview">
+        <div><div class="eyebrow"><span class="eyebrow-line"></span> REAL-TIME SAFETY INTELLIGENCE</div><h1>Driver monitoring <span>dashboard</span></h1><p class="subtitle">Monitor driver attention, detect fatigue signals, and review safety events from one workspace.</p></div>
+        <div class="heading-date"><span class="tiny-label">LOCAL SESSION TIME</span><strong id="clock">--:--:--</strong><span id="dateLabel">Loading date</span></div>
+      </section>
+
+      <section class="metric-grid" aria-label="Session metrics">
+        <article class="metric-card"><div class="metric-top"><span>DRIVER STATUS</span><span class="metric-symbol green">◎</span></div><div class="metric-value" id="statusMetric">Standby</div><div class="metric-foot"><span class="status-pill neutral" id="statusPill">● Waiting</span><span>Current assessment</span></div></article>
+        <article class="metric-card"><div class="metric-top"><span>ATTENTION SCORE</span><span class="metric-symbol blue">◈</span></div><div class="metric-value"><span id="attentionMetric">—</span><small id="attentionUnit"> %</small></div><div class="metric-foot"><span class="mini-bar"><i id="attentionBar"></i></span><span id="attentionHint">Awaiting camera</span></div></article>
+        <article class="metric-card"><div class="metric-top"><span>SAFETY EVENTS</span><span class="metric-symbol amber">⌁</span></div><div class="metric-value" id="eventMetric">0</div><div class="metric-foot"><span class="event-indicator"></span><span>During this session</span></div></article>
+        <article class="metric-card"><div class="metric-top"><span>SESSION DURATION</span><span class="metric-symbol purple">◷</span></div><div class="metric-value" id="durationMetric">00:00</div><div class="metric-foot"><span class="live-mini"></span><span id="sessionHint">Not started</span></div></article>
+      </section>
+
+      <section class="monitor-grid" id="monitor">
+        <article class="panel camera-panel">
+          <div class="panel-header"><div><div class="panel-kicker">CAMERA FEED</div><h2>Live driver view</h2></div><div class="feed-tag" id="feedTag"><span></span> CAMERA OFF</div></div>
+          <div class="camera-stage" id="cameraStage">
+            <video id="cameraVideo" autoplay muted playsinline></video>
+            <canvas id="overlayCanvas"></canvas>
+            <div class="camera-placeholder" id="cameraPlaceholder"><div class="camera-orbit"><span class="camera-glyph">▣</span><span class="orbit-ring"></span></div><h3>Camera feed is paused</h3><p>Start a camera session to begin browser-based face landmark analysis.</p><div class="camera-requirement">⌁ &nbsp; Camera permission required</div></div>
+            <div class="camera-hud hud-top-left"><span class="hud-live-dot"></span><span id="hudFeedStatus">NO SIGNAL</span></div>
+            <div class="camera-hud hud-top-right"><span id="faceIndicator">FACE: —</span><span class="hud-divider"></span><span id="fpsIndicator">FPS: —</span></div>
+            <div class="camera-hud hud-bottom-left"><span class="hud-coord">DS / WEB</span><span id="landmarkIndicator">LANDMARKS: OFF</span></div>
+            <div class="camera-hud hud-bottom-right" id="recordingIndicator">SESSION IDLE</div>
+          </div>
+          <div class="camera-actions"><div class="camera-note"><span class="privacy-dot"></span> Processing stays in this browser</div><div class="action-buttons"><button class="btn btn-secondary" id="stopBtn" disabled>Stop</button><button class="btn btn-primary" id="startBtn"><span>▶</span> Start monitoring</button></div></div>
+          <div class="camera-help" id="cameraHelp" role="status">For camera access, open this website using HTTPS or localhost. Allow permission when your browser asks.</div>
+        </article>
+
+        <article class="panel analysis-panel">
+          <div class="panel-header"><div><div class="panel-kicker">AI INTERPRETATION</div><h2>Driver state analysis</h2></div><span class="live-badge"><i></i> LIVE ANALYSIS</span></div>
+          <div class="state-banner" id="stateBanner"><div class="state-icon" id="stateIcon">◎</div><div><span class="tiny-label">DETECTED STATE</span><h3 id="stateTitle">Awaiting camera</h3><p id="stateDescription">Start monitoring to analyze visible face landmarks.</p></div><span class="state-chevron">›</span></div>
+          <div class="analysis-list">
+            <div class="analysis-row"><div class="analysis-icon eye-icon">◉</div><div class="analysis-info"><b>Eye state</b><small id="eyeDetail">No signal</small></div><span class="value-chip" id="eyeValue">—</span></div>
+            <div class="analysis-row"><div class="analysis-icon head-icon">⌖</div><div class="analysis-info"><b>Head direction</b><small>Estimated from face position</small></div><span class="value-chip" id="headValue">—</span></div>
+            <div class="analysis-row"><div class="analysis-icon mouth-icon">◡</div><div class="analysis-info"><b>Mouth / yawn signal</b><small id="mouthDetail">Waiting for landmarks</small></div><span class="value-chip" id="mouthValue">—</span></div>
+            <div class="analysis-row"><div class="analysis-icon attention-icon">⌁</div><div class="analysis-info"><b>Attention indicator</b><small>Heuristic browser estimate</small></div><span class="value-chip" id="attentionValue">—</span></div>
+          </div>
+          <div class="analysis-footer"><span class="info-icon">i</span><p>Estimates are experimental and may be inaccurate. Keep attention on the road; never rely on this demo as a safety device.</p></div>
+        </article>
+      </section>
+
+      <section class="lower-grid">
+        <article class="panel events-panel" id="events"><div class="panel-header"><div><div class="panel-kicker">SESSION ACTIVITY</div><h2>Recent safety events</h2></div><button class="text-button" id="exportBtn">Export CSV ↗</button></div><div class="table-wrap"><table><thead><tr><th>EVENT</th><th>TIME</th><th>DETAIL</th><th>LEVEL</th></tr></thead><tbody id="eventTable"><tr class="empty-row"><td colspan="4"><span class="empty-icon">≋</span><b>No events recorded yet</b><small>Start monitoring to populate this activity log.</small></td></tr></tbody></table></div><div class="table-footer"><span id="eventCountLabel">Showing 0 events</span><button class="text-button muted" id="clearBtn">Clear session log</button></div></article>
+        <article class="panel signals-panel"><div class="panel-header"><div><div class="panel-kicker">SIGNAL QUALITY</div><h2>Detection indicators</h2></div><span class="quality-status" id="qualityStatus">IDLE</span></div><div class="signal-item"><div class="signal-heading"><span>Face landmarks</span><b id="faceQualityText">Inactive</b></div><div class="signal-track"><i id="faceQualityBar"></i></div></div><div class="signal-item"><div class="signal-heading"><span>Eye openness</span><b id="eyeQualityText">—</b></div><div class="signal-track"><i id="eyeQualityBar"></i></div></div><div class="signal-item"><div class="signal-heading"><span>Head alignment</span><b id="headQualityText">—</b></div><div class="signal-track"><i id="headQualityBar"></i></div></div><div class="signals-tip"><span>✦</span><div><b>For a clearer reading</b><p>Position your face in the center, face the camera, and use even lighting.</p></div></div></article>
+      </section>
+
+      <section class="about-strip" id="about"><div class="about-symbol">⌘</div><div><b>About this browser demo</b><p>Uses MediaPipe Face Landmarker blendshapes and facial landmarks to estimate eye closure, mouth opening, and head direction. It is a demonstration interface, not a validated driver-safety product.</p></div><a href="README.md" class="about-link">Project guide ↗</a></section>
+      <footer class="page-footer"><span>DRIVESENSE AI <i>•</i> DRIVER MONITORING SYSTEM</span><span>WEB DEMO <i>•</i> <span id="footerYear">2026</span></span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
